@@ -51,6 +51,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '../axios';
+import { useStore } from 'vuex';
 
 export default {
   setup() {
@@ -60,6 +61,7 @@ export default {
     const showError = ref(false);
     const loading = ref(false);
     const router = useRouter();
+    const store = useStore();
 
     const login = async () => {
       loading.value = true;
@@ -72,7 +74,7 @@ export default {
           password: password.value,
         });
 
-        localStorage.setItem('authToken', response.data.token);
+        store.commit('setAuthToken', response.data.token);
 
         router.push('/profile');
       } catch (err) {

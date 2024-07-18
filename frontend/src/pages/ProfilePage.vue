@@ -42,12 +42,14 @@
 import { ref, onMounted } from 'vue';
 import apiClient from '../axios';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 export default {
   setup() {
     const user = ref({});
     const error = ref('');
     const router = useRouter();
+    const store = useStore();
 
     const fetchUserProfile = async () => {
       try {
@@ -61,7 +63,7 @@ export default {
     const logout = async () => {
       try {
         await apiClient.post('/logout');
-        localStorage.removeItem('authToken');
+        store.commit('clearAuthToken');
         router.push('/');
       } catch (error) {
         console.error('Logout failed:', error.response?.data?.message || error.message);
