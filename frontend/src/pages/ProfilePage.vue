@@ -2,6 +2,11 @@
   <v-container>
     <v-row justify="center">
       <v-col cols="12" md="8">
+        <v-btn @click="logout" color="primary">Logout</v-btn>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="12" md="8">
         <v-card>
           <v-card-title>
             <span class="text-h5">User Profile</span>
@@ -36,11 +41,13 @@
 <script>
 import { ref, onMounted } from 'vue';
 import apiClient from '../axios';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
     const user = ref({});
     const error = ref('');
+    const router = useRouter();
 
     const fetchUserProfile = async () => {
       try {
@@ -51,6 +58,16 @@ export default {
       }
     };
 
+    const logout = async () => {
+      try {
+        await apiClient.post('/logout');
+        localStorage.removeItem('authToken');
+        router.push('/');
+      } catch (error) {
+        console.error('Logout failed:', error.response?.data?.message || error.message);
+      }
+    }
+
     onMounted(() => {
       fetchUserProfile();
     });
@@ -58,10 +75,10 @@ export default {
     return {
       user,
       error,
+      logout
     };
   },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

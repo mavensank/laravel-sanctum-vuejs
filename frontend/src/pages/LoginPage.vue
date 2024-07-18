@@ -23,7 +23,7 @@
                 required
               ></v-text-field>
 
-              <v-btn type="submit" color="primary" class="mt-4" :loading="loading">
+              <v-btn type="submit" color="primary" class="my-4" :loading="loading">
                 Login
               </v-btn>
             </v-form>
@@ -37,6 +37,9 @@
             >
               {{ error }}
             </v-alert>
+
+            <router-link class="mt-4" to="/register">Don't have an account? Register here</router-link>
+
           </v-card-text>
         </v-card>
       </v-col>
