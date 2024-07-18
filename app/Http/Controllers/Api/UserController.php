@@ -53,4 +53,9 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Logout successful']);
     }
+
+    public function getUser(Request $request)
+    {
+        return response()->json(['user' => $request->user()]);
+    }
 }
