@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,5 +30,20 @@ class UserController extends Controller
         ]);
 
         return response()->json(['message' => 'User registered successfully', 'user' => $user]);
+    }
+
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('vxd'.$user->id)->plainTextToken;
+
+            return response()->json(['token' => $token]);
+        }
+
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
 }
